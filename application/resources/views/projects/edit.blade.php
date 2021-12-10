@@ -87,6 +87,12 @@
                         <x-input id="name" class="block mt-1 w-full {{ $errors->has('name') ? 'border-red-600' :'' }}" type="text" name="name" :value="old('name', $project->name)" placeholder="プロジェクト名" required autofocus />
                     </div>
                 </div>
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="md:w-full px-3 mb-6">
+                    <x-label for="detail" :value="__('Project Detail')" class="{{ $errors->has('detail') ? 'text-red-600' :'' }}" />
+                    <x-textarea id="detail" class="block mt-2 w-full {{ $errors->has('detail') ? 'border-red-600' :'' }}" type="text" name="detail" :value="old('detail',$project->detail)" placeholder="課題詳細" rows="3" />
+                    </div>
+                </div>
             </div>
         </form>
 

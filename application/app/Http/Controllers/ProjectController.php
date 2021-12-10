@@ -56,12 +56,14 @@ class ProjectController extends Controller
         $request->validate([
             'key' => 'required|string|max:255|regex:/^[a-zA-Z0-9-_]+$/i|unique:projects,key,NULL,id,exist,1',
             'name' => 'required|string|max:255',
+            'detail' =>'string|max:1000',
         ]);
 
         if (Project::create([
             'key' => $request->key,
             'name' => $request->name,
             'created_user_id' => $request->user()->id,
+            'detail' =>$request->detail,
         ])) {
             $flash = ['success' => __('Project created successfully.')];
         } else {
@@ -106,6 +108,7 @@ class ProjectController extends Controller
         $request->validate([
             'key' => "required|string|max:255|regex:/^[a-zA-Z0-9-_]+$/i|unique:projects,key,$project->id,id,exist,1",
             'name' => 'required|string|max:255',
+            'detail' =>'string|max:1000',
         ]);
 
         if ($project->update($request->all())) {
