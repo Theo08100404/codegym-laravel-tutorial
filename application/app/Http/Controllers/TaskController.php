@@ -102,6 +102,7 @@ class TaskController extends Controller
         $request->validate([
             'task_kind_id' => 'required|integer',
             'name' => 'required|string|max:255',
+            'detail'=>'string|max:1000',
             'task_status_id' => 'required|integer',
             'assigner_id' => 'nullable|integer',
             'task_category_id' => 'nullable|integer',
@@ -113,6 +114,7 @@ class TaskController extends Controller
             'project_id' => $project->id,
             'task_kind_id' => $request->task_kind_id,
             'name' => $request->name,
+            'detail' => $request->detail,
             'task_status_id' => $request->task_status_id,
             'assigner_id' => $request->assigner_id,
             'task_category_id' => $request->task_category_id,
@@ -145,16 +147,18 @@ class TaskController extends Controller
      * @param  \App\Models\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project, Task $task)
+    public function edit(Project $project, Task $task )
     {
         $task_kinds = TaskKind::all();
         $task_statuses = TaskStatus::all();
+        $detail =Task::all();
         $task_categories = TaskCategory::all();
         $assigners = User::all();
 
         return view('tasks.edit', [
             'project' => $project,
             'task_kinds' => $task_kinds,
+            'detail' => $detail,
             'task_statuses' => $task_statuses,
             'task_categories' => $task_categories,
             'assigners' => $assigners,
@@ -174,6 +178,7 @@ class TaskController extends Controller
         $request->validate([
             'task_kind_id' => 'required|integer',
             'name' => 'required|string|max:255',
+            'detail'=>'string|max:1000',
             'task_status_id' => 'required|integer',
             'assigner_id' => 'nullable|integer',
             'task_category_id' => 'nullable|integer',

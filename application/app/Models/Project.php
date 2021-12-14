@@ -21,7 +21,6 @@ class Project extends Model
     protected $fillable = [
         'key',
         'name',
-        'detail',
         'created_user_id',
     ];
 

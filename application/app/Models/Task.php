@@ -21,6 +21,7 @@ class Task extends Model
     protected $fillable = [
         'project_id',
         'name',
+        'detail',
         'task_kind_id',
         'task_status_id',
         'created_user_id',
@@ -78,6 +79,14 @@ class Task extends Model
     public function task_kind()
     {
         return $this->belongsTo(TaskKind::class, 'task_kind_id');
+    }
+
+    /**
+     * 課題詳細を取得.
+     */
+    public function detail()
+    {
+        return $this->belongsTo(Detail::class, 'detail');
     }
 
     /**

@@ -17,7 +17,6 @@ class CreateProjectsTable extends Migration
             $table->id();
             $table->string('key')->unique();
             $table->string('name');
-            $table->string('detail');
             $table->foreignId('created_user_id')->constrained('users');
             $table->timestamps();
             $table->softDeletes();

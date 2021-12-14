@@ -63,7 +63,6 @@ class ProjectController extends Controller
             'key' => $request->key,
             'name' => $request->name,
             'created_user_id' => $request->user()->id,
-            'detail' =>$request->detail,
         ])) {
             $flash = ['success' => __('Project created successfully.')];
         } else {
