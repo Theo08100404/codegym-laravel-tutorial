@@ -160,6 +160,6 @@ return [
         'assigner_id' => '担当者ID',
         'task_category_id' => 'カテゴリーID',
         'task_resolution_id' => '完了理由ID',
-        'detail'=>'課題詳細',
+        'detail'=>'課題の詳細',
     ],
 ];
