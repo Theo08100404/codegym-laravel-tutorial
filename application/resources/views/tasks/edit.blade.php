@@ -36,7 +36,6 @@
             toggleModal();
         }
     };
-
 </script>
 @endsection
 <x-app-layout>
@@ -93,6 +92,13 @@
                     <div class="md:w-full px-3 mb-6">
                         <x-label for="name" :value="__('Task Name')" class="{{ $errors->has('name') ? 'text-red-600' :'' }}" />
                         <x-input id="name" class="block mt-1 w-full {{ $errors->has('name') ? 'border-red-600' :'' }}" type="text" name="name" :value="old('name', $task->name)" placeholder="課題名" required autofocus />
+                    </div>
+                </div>
+
+                <div class="-mx-3 md:flex mb-6">
+                    <div class="md:w-full px-3 mb-6">
+                        <x-label for="detail" :value="__('Task Detail')" class="{{ $errors->has('detail') ? 'text-red-600' :'' }}" />
+                        <x-textarea id="detail" class="block mt-2 w-full {{ $errors->has('detail') ? 'border-red-600' :'' }}" type="text" name="detail" :value="old('detail', $task->detail)" placeholder="課題の詳細" rows="3" />
                     </div>
                 </div>
 
