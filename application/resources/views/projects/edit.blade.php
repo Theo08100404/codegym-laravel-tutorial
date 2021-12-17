@@ -36,7 +36,6 @@
             toggleModal();
         }
     };
-
 </script>
 @endsection
 <x-app-layout>

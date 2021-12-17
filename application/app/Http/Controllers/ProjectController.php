@@ -22,8 +22,8 @@ class ProjectController extends Controller
         $projects = Project::select('*');
         if ($request->has('keyword') && $keyword != '') {
             $projects = $projects
-                ->where('key', 'like', '%'.$keyword.'%')
-                ->orwhere('name', 'like', '%'.$keyword.'%');
+                ->where('key', 'like', '%' . $keyword . '%')
+                ->orwhere('name', 'like', '%' . $keyword . '%');
         }
         $projects = $projects
             ->sortable('name')
@@ -138,4 +138,3 @@ class ProjectController extends Controller
             ->with($flash);
     }
 }
-
