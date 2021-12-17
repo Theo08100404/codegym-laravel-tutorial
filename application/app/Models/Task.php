@@ -82,14 +82,6 @@ class Task extends Model
     }
 
     /**
-     * 課題詳細を取得.
-     */
-    public function detail()
-    {
-        return $this->belongsTo(Detail::class, 'detail');
-    }
-
-    /**
      * 課題状態を取得.
      */
     public function task_status()

@@ -16,11 +16,10 @@ class UpdateProjectTable extends Migration
         Schema::table('projects', function (Blueprint $table) {
             $table->dropUnique(['key']);
             $table->boolean('exist')->nullable()
-            ->storedAs('CASE WHEN deleted_at IS NULL THEN 1 ELSE null END');
+                ->storedAs('CASE WHEN deleted_at IS NULL THEN 1 ELSE null END');
             $table->unique(['key', 'exist']);
         });
     }
-
     /**
      * Reverse the migrations.
      *

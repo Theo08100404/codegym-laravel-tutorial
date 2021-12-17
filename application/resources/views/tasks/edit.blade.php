@@ -36,7 +36,6 @@
             toggleModal();
         }
     };
-
 </script>
 @endsection
 <x-app-layout>
@@ -98,11 +97,11 @@
 
                 <div class="-mx-3 md:flex mb-6">
                     <div class="md:w-full px-3 mb-6">
-                    <x-label for="detail" :value="__('Task Detail')" class="{{ $errors->has('detail') ? 'text-red-600' :'' }}" />
-                    <x-textarea id="detail" class="block mt-2 w-full {{ $errors->has('detail') ? 'border-red-600' :'' }}" type="text" name="detail" :value="old('detail', $task->detail)" placeholder="課題の詳細" rows="3" />
+                        <x-label for="detail" :value="__('Task Detail')" class="{{ $errors->has('detail') ? 'text-red-600' :'' }}" />
+                        <x-textarea id="detail" class="block mt-2 w-full {{ $errors->has('detail') ? 'border-red-600' :'' }}" type="text" name="detail" :value="old('detail', $task->detail)" placeholder="課題の詳細" rows="3" />
                     </div>
                 </div>
-                
+
                 <div class="-mx-3 md:flex mb-6">
                     <div class="md:w-1/4 px-3 mb-6">
                         <x-label for="task_status_id" :value="__('Task Status')" class="{{ $errors->has('task_status_id') ? 'text-red-600' :'' }}" />

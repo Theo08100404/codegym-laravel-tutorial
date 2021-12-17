@@ -22,8 +22,8 @@ class ProjectController extends Controller
         $projects = Project::select('*');
         if ($request->has('keyword') && $keyword != '') {
             $projects = $projects
-                ->where('key', 'like', '%'.$keyword.'%')
-                ->orwhere('name', 'like', '%'.$keyword.'%');
+                ->where('key', 'like', '%' . $keyword . '%')
+                ->orwhere('name', 'like', '%' . $keyword . '%');
         }
         $projects = $projects
             ->sortable('name')
@@ -56,7 +56,6 @@ class ProjectController extends Controller
         $request->validate([
             'key' => 'required|string|max:255|regex:/^[a-zA-Z0-9-_]+$/i|unique:projects,key,NULL,id,exist,1',
             'name' => 'required|string|max:255',
-            'detail' =>'string|max:1000',
         ]);
 
         if (Project::create([
@@ -107,7 +106,6 @@ class ProjectController extends Controller
         $request->validate([
             'key' => "required|string|max:255|regex:/^[a-zA-Z0-9-_]+$/i|unique:projects,key,$project->id,id,exist,1",
             'name' => 'required|string|max:255',
-            'detail' =>'string|max:1000',
         ]);
 
         if ($project->update($request->all())) {
@@ -140,4 +138,3 @@ class ProjectController extends Controller
             ->with($flash);
     }
 }
-

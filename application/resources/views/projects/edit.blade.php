@@ -36,7 +36,6 @@
             toggleModal();
         }
     };
-
 </script>
 @endsection
 <x-app-layout>
@@ -87,7 +86,6 @@
                         <x-input id="name" class="block mt-1 w-full {{ $errors->has('name') ? 'border-red-600' :'' }}" type="text" name="name" :value="old('name', $project->name)" placeholder="プロジェクト名" required autofocus />
                     </div>
                 </div>
-
             </div>
         </form>
 

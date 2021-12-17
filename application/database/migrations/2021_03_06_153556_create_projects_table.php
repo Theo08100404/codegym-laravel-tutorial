@@ -21,6 +21,15 @@ class CreateProjectsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::create('comments', function (Blueprint $table) {
+            $table->id();
+            $table->string('comments', 1000);
+            $table->foreignId('product_id')->constrained('projects');
+            $table->foreignId('created_user_id')->constrained('users');
+            $table->timestamps();
+            $table->softDeletes();
+        });
     }
 
     /**
