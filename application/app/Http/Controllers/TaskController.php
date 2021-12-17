@@ -114,6 +114,7 @@ class TaskController extends Controller
             'project_id' => $project->id,
             'task_kind_id' => $request->task_kind_id,
             'name' => $request->name,
+            'detail' => $request->detail,
             'task_status_id' => $request->task_status_id,
             'assigner_id' => $request->assigner_id,
             'task_category_id' => $request->task_category_id,
