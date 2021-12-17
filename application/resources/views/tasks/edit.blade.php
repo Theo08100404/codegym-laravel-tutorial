@@ -117,14 +117,13 @@
                 </div>
             </div>
         </form>
-
         <form name="deleteform" method="POST" action="{{ route('tasks.destroy', ['project' => $project->id, 'task' => $task]) }}">
             @csrf
-            @method('DELETE')
+            @method("Delete")
             <!-- Navigation -->
             <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-start">
                 <x-button class="modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
-                    {{ __('Delete') }}
+                {{ __('Delete') }}
                 </x-button>
             </div>
 
