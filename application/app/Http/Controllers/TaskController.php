@@ -8,6 +8,7 @@ use App\Models\TaskCategory;
 use App\Models\TaskKind;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -153,8 +154,14 @@ class TaskController extends Controller
         $task_statuses = TaskStatus::all();
         $task_categories = TaskCategory::all();
         $assigners = User::all();
-
-        return view('tasks.edit', [
+        $users = User::all()->first();
+        $comments = Comment::select(
+            'comments.*',
+            'comments.user_id as key'
+        )
+        ->with('user')
+        ->join('users' , 'comments.user_id', '=', $users->id);
+        return view('tasks.edit', compact('comments') , [
             'project' => $project,
             'task_kinds' => $task_kinds,
             'task_statuses' => $task_statuses,

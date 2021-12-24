@@ -123,6 +123,7 @@
                 </div>
             </div>
         </form>
+
         <form name="deleteform" method="POST" action="{{ route('tasks.destroy', ['project' => $project->id, 'task' => $task]) }}">
             @csrf
             @method("Delete")
@@ -170,5 +171,42 @@
                 </div>
             </div>
         </form>
+        <form method="POST" action="{{ route('comments.store', ['project' => $project->id, 'task' => $task->id]) }}">
+            @csrf
+            <div class="flex flex-col px-4 pt-6 mx-4 rounded-md bg-white">
+                <div class="md:w-full px-3 mb-16">
+                    <x-label for="comment" :value="__('Comment')" class="{{ $errors->has('comment') ? 'text-red-600' :'' }}" />
+                    <x-input id="comment" class="block mt-1 w-full {{ $errors->has('comment') ? 'border-red-600' :'' }}" type="text" name="comment" :value="old('comment', $task->comment)" placeholder="コメント" rows="2" />
+                </div>
+                <div class="md:w-1/4 px-3 mb-16">
+                <x-button class="bg-black-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                    コメントする
+                </x-button>
+                </div>
+            </div>
+        </form>
+        <div class="flex flex-col px-4 pt-6 mx-4 rounded-md bg-white"> 
+            <div class="md:w-full px-3 mb-6">
+                @foreach($comments as $comment)
+                    <tr>
+                        <th>{{ $comment->user->name }}</th>
+                        <th>{{ $comment->updated_at }}</th>
+                        <div class="md:w-full px-3 mb-6">
+                            <p>{{ $comment->comment }}</p>
+                        </div>
+                        <form method="POST" action="{{ route('comments.destroy', ['project' => $project->id, 'task' => $task->id]) }}">
+                            @csrf
+                            @method("Delete")
+                        <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-start">
+                            <x-button class="modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                            {{ __('Delete') }}
+                            </x-button>
+                        </div>
+
+                    </tr>
+                @endforeach  
+        </div>  
+</div> 
+
     </div>
 </x-app-layout>
