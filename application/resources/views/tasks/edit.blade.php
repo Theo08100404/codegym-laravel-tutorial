@@ -36,6 +36,44 @@
             toggleModal();
         }
     };
+
+    function comToggleModal() {
+        const comBody = document.querySelector('body');
+        const comModal = document.querySelector('.com-modal');
+        comModal.classList.toggle('opacity-0');
+        comModal.classList.toggle('pointer-events-none');
+        comBody.classList.toggle('modal-active');
+    };
+
+    const comOverlay = document.querySelector('.com-modal-overlay');
+    comOverlay.addEventListener('click', comToggleModal);
+
+    var comCloseModal = document.querySelectorAll('.com-modal-close');
+    for (var i = 0; i < comCloseModal.length; i++) {
+        comCloseModal[i].addEventListener('click', comToggleModal);
+    }
+
+    var comOpenModal = document.querySelectorAll('.com-modal-open');
+    for (var i = 0; i < comOpenModal.length; i++) {
+        comOpenModal[i].addEventListener('click', function(event) {
+            event.preventDefault();
+            comToggleModal();
+        })
+    }
+
+    document.onkeydown = function(evt) {
+        evt = evt || window.event;
+        var isEscape = false;
+        if ('key' in evt) {
+            isEscape = (evt.key === 'Escape' || evt.key === 'Esc');
+        } else {
+            isEscape = (evt.keyCode === 27);
+        }
+        if (isEscape && document.comBody.classList.contains('modal-active')) {
+            comToggleModal();
+        }
+    }
+
 </script>
 @endsection
 <x-app-layout>
@@ -171,40 +209,77 @@
                 </div>
             </div>
         </form>
+
         <form method="POST" action="{{ route('comments.store', ['project' => $project->id, 'task' => $task->id]) }}">
             @csrf
             <div class="flex flex-col px-4 pt-6 mx-4 rounded-md bg-white">
                 <div class="md:w-full px-3 mb-16">
                     <x-label for="comment" :value="__('Comment')" class="{{ $errors->has('comment') ? 'text-red-600' :'' }}" />
-                    <x-input id="comment" class="block mt-1 w-full {{ $errors->has('comment') ? 'border-red-600' :'' }}" type="text" name="comment" :value="old('comment', $task->comment)" placeholder="コメント" rows="2" />
+                    <x-textarea id="comment" class="block mt-2 w-full {{ $errors->has('comment') ? 'border-red-600' :'' }}" type="text" name="comment"  placeholder="コメントを入力して下さい" rows="2" />
                 </div>
                 <div class="md:w-1/4 px-3 mb-16">
-                <x-button class="bg-black-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                <x-button >
                     コメントする
                 </x-button>
                 </div>
             </div>
         </form>
         <div class="flex flex-col px-4 pt-6 mx-4 rounded-md bg-white"> 
-            <div class="md:w-full px-3 mb-6">
+            <div class="md:w-full px-3 mb-6">    
                 @foreach($comments as $comment)
                     <tr>
-                        <th>{{ $comment->user->name }}</th>
+                        <th>{{ $comment->commenter->name }}</th>
                         <th>{{ $comment->updated_at }}</th>
                         <div class="md:w-full px-3 mb-6">
-                            <p>{{ $comment->comment }}</p>
+                            <p>{!!nl2br(e($comment->comment))!!}</p>
                         </div>
-                        <form method="POST" action="{{ route('comments.destroy', ['project' => $project->id, 'task' => $task->id]) }}">
+                        <form method="POST" action="{{ route('comments.destroy', ['project' => $project->id, 'task' => $task->id ,'comment' => $comment->id ]) }}">
                             @csrf
                             @method("Delete")
-                        <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-start">
-                            <x-button class="modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
-                            {{ __('Delete') }}
-                            </x-button>
-                        </div>
+                            <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-start">
+                                <x-button class="com-modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                                    {{ __('Delete') }}
+                                </x-button>
+                            </div>
+                                <!--Modal-->
+                                <div class="com-modal opacity-0 pointer-events-none fixed w-full h-full top-0 left-0 flex items-center justify-center">
+                                    <div class="com-modal-overlay absolute w-full h-full bg-gray-900 opacity-50"></div>
 
-                    </tr>
-                @endforeach  
+                                    <div class="com-modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+
+                                        <div class="com-modal-close absolute top-0 right-0 cursor-pointer flex flex-col items-center mt-4 mr-4 text-white text-sm z-50">
+                                            <svg class="fill-current text-white" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                                                <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                                            </svg>
+                                            <span class="text-sm">(Esc)</span>
+                                        </div>
+
+                                        <div class="com-modal-content py-4 text-left px-6">
+                                            <div class="flex justify-between items-center pb-3">
+                                                <p class="text-2xl font-bold">{{ __('Are you sure you want to delete this comment?') }}</p>
+                                                <div class="com-modal-close cursor-pointer z-50">
+                                                    <svg class="fill-current text-black" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18">
+                                                        <path d="M14.53 4.53l-1.06-1.06L9 7.94 4.53 3.47 3.47 4.53 7.94 9l-4.47 4.47 1.06 1.06L9 10.06l4.47 4.47 1.06-1.06L10.06 9z"></path>
+                                                    </svg>
+                                                </div>
+                                            </div>
+                                            <p>{{ __('Are you sure you want to delete this comment? Once a comment is deleted, all of its resources and data will be permanently deleted.') }}</p>
+
+                                            <div class="flex justify-end pt-2">
+                                                <x-link-button class="com-modal-close m-2" href="#">
+                                                    {{ __('Cancel') }}
+                                                </x-link-button>
+                                                <x-button class="m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                                                    {{ __('Delete') }}
+                                                </x-button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </form>    
+                    </tr>        
+                @endforeach
+            </div>      
         </div>  
 </div> 
 

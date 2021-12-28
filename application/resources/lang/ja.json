@@ -199,5 +199,9 @@
     "Are you sure you want to delete this task? Once a task is deleted, all of its resources and data will be permanently deleted.": "本当に課題を削除してよろしいでしょうか？一度課題を削除すると、すべてのリソースとデータは永久に削除されます。",
     "Comment":"コメント",
     "Comment created successfully.":"コメントを作成しました。",
-    "Failed to create the comment.":"コメントの作成に失敗しました。"
+    "Failed to create the comment.":"コメントの作成に失敗しました。",
+    "Comment deleted successfully.":"コメントを削除しました。",
+    "Failed to delete the comment.":"コメントの削除に失敗しました。",
+    "Are you sure you want to delete this comment?":"コメントを削除しますか？",
+    "Are you sure you want to delete this comment? Once a comment is deleted, all of its resources and data will be permanently deleted.":"本当に課題を削除してよろしいでしょうか？一度課題を削除すると、すべてのリソースとデータは永久に削除されます。"
 }

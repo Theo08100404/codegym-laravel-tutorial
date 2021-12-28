@@ -154,13 +154,8 @@ class TaskController extends Controller
         $task_statuses = TaskStatus::all();
         $task_categories = TaskCategory::all();
         $assigners = User::all();
-        $users = User::all()->first();
-        $comments = Comment::select(
-            'comments.*',
-            'comments.user_id as key'
-        )
-        ->with('user')
-        ->join('users' , 'comments.user_id', '=', $users->id);
+        $id =$task->id;
+        $comments = Comment::where('task_id',$id)->get();
         return view('tasks.edit', compact('comments') , [
             'project' => $project,
             'task_kinds' => $task_kinds,
