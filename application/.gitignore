@@ -13,3 +13,4 @@ npm-debug.log
 yarn-error.log
 supervisord.*
 .php_cs.cache
+docker-compose.yml
