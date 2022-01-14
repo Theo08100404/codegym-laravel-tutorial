@@ -45,6 +45,13 @@ class CreateTasksTable extends Migration
             $table->softDeletes();
         });
 
+        Schema::create('task_images', function (Blueprint $table) {
+            $table->id();
+            $table->string('image');
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects');
@@ -56,8 +63,10 @@ class CreateTasksTable extends Migration
             $table->foreignId('updated_user_id')->nullable()->constrained('users');
             $table->foreignId('assigner_id')->nullable()->constrained('users');
             $table->foreignId('task_category_id')->nullable()->constrained('task_categories');
+            $table->string('task_image_id')->constrained('task_images');
             $table->date('due_date')->nullable();
             $table->foreignId('task_resolution_id')->nullable()->constrained('task_resolutions');
+
             $table->timestamps();
             $table->softDeletes();
         });

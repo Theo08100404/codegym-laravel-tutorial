@@ -8,6 +8,7 @@ use App\Models\TaskCategory;
 use App\Models\TaskKind;
 use App\Models\TaskStatus;
 use App\Models\User;
+use App\Models\Image;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
