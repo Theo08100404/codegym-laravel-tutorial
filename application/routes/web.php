@@ -32,4 +32,5 @@ Route::resource('projects/{project}/tasks', TaskController::class)
     ->middleware(['auth']);
 
 Route::resource('projects/{project}/tasks/{task}/comments', App\Http\Controllers\CommentController::class)
+    ->only(['store', 'destroy'])
     ->middleware(['auth']);

@@ -13,7 +13,7 @@ class CommentController extends Controller
     public function store(Request $request, Project $project, Task $task)
     {
         $request->validate([
-            'comment' => 'max:1000'
+            'comment' => 'min:1|max:1000'
         ]);
 
         if (Comment::create([
@@ -34,8 +34,8 @@ class CommentController extends Controller
 
     public function destroy (Project $project, Task $task, Comment $comment ,Request $request)  
     {   
-        
-        if ($comment->user_id == $request->user()->id)  {
+    
+        if ($comment->user_id === $request->user()->id)  {
             $comment->delete();
             $flash = ['success' => __('Comment deleted successfully.')];
         } else {

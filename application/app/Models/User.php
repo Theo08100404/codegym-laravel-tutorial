@@ -58,7 +58,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     //ユーザーのコメントを取得
-    public function commenter()
+    public function comment()
     {
         return $this->hasMany(Comment::class, 'user_id');
     }
