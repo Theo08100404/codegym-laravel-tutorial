@@ -74,19 +74,8 @@
         }
     }
 
-    const modalOpen = (commentID) => {
-        //urlを組み立てる
-        let id = commentID;
-        let url = "{{ route('comments.destroy', ['project' => $project->id, 'task' => $task->id , 'comment'])}}";
-        let n = 2;
-        let changeUrl = url.replace(/comment/g, function(match) {
-            if (--n == 0) {
-                return '';
-            } else {
-                return match;
-            };
-        });
-        let correctUrl = document.comDeleteForm.action = changeUrl + id;
+    const modalOpen = (url) => {
+        document.comDeleteForm.action = url;
     }
 </script>
 @endsection
@@ -250,7 +239,10 @@
                     </div>
                     @if(Auth::user()->id === $comment->user_id)
                     <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8 flex justify-start">
-                        <x-button class="com-modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300" id="deleteCom" onclick="modalOpen({{$comment->id}})">
+                        @php
+                        $urlDeleteComment = route('comments.destroy', ['project' => $project->id, 'task' => $task, 'comment' => $comment]);
+                        @endphp
+                        <x-button class="com-modal-open m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300" id="deleteCom" onclick=" modalOpen('{{$urlDeleteComment}}')">
                             {{ __('Delete') }}
                         </x-button>
                     </div>
