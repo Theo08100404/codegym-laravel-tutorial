@@ -84,5 +84,6 @@ class CreateTasksTable extends Migration
         Schema::dropIfExists('task_statuses');
         Schema::dropIfExists('task_categories');
         Schema::dropIfExists('task_resolutions');
+        Schema::dropIfExists('task_images');
     }
 }

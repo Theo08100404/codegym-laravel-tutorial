@@ -129,7 +129,7 @@ class Task extends Model
         return $this->belongsTo(TaskResolution::class, 'task_resolution_id');
     }
 
-    public function task_image()
+    public function image()
     {
         return $this->belongsTo(Images::class, 'task_image_id');
     }
