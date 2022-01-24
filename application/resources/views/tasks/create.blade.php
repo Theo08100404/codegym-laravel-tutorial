@@ -79,12 +79,5 @@
                 </div>
             </div>
         </form>
-        <div class="flex flex-col px-8 pt-6 mx-6 rounded-md bg-white">
-            <div class="md:w-1/4 px-3 mb-6">
-                <label for="image">画像登録</label>
-                <input type="file" class="form-control-file" name='image' id="image">
-                <x-button type='submit' class="">保存</x-button>
-            </div>
-        </div>
     </div>
 </x-app-layout>
