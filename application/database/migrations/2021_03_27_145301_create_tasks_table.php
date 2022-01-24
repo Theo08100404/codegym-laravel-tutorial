@@ -59,7 +59,6 @@ class CreateTasksTable extends Migration
             $table->foreignId('task_category_id')->nullable()->constrained('task_categories');
             $table->date('due_date')->nullable();
             $table->foreignId('task_resolution_id')->nullable()->constrained('task_resolutions');
-
             $table->timestamps();
             $table->softDeletes();
         });
@@ -77,6 +76,5 @@ class CreateTasksTable extends Migration
         Schema::dropIfExists('task_statuses');
         Schema::dropIfExists('task_categories');
         Schema::dropIfExists('task_resolutions');
-        Schema::dropIfExists('task_images');
     }
 }
