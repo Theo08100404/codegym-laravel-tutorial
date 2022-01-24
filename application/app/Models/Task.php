@@ -135,8 +135,17 @@ class Task extends Model
         return $this->hasMany('App\Models\Comment');
     }
 
-    public function image()
+    public function images()
     {
         return $this->hasMany('App\Models\Image');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($task) {
+            $task->images()->delete();
+        });
     }
 }

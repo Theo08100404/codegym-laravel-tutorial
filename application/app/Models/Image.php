@@ -17,7 +17,16 @@ class Image extends Model
         'image',
         'project_id',
         'task_id',
-
-
     ];
+
+
+    public function task()
+    {
+        return $this->belongsTo('App\Models\Task');
+    }
+
+    public function project()
+    {
+        return $this->belongsTo('App\Models\Project');
+    }
 }
