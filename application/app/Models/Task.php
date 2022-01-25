@@ -128,4 +128,24 @@ class Task extends Model
     {
         return $this->belongsTo(TaskResolution::class, 'task_resolution_id');
     }
+
+    //タスクのコメントを取得
+    public function comment()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\Image');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($task) {
+            $task->images()->delete();
+        });
+    }
 }
