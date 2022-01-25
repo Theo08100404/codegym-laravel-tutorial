@@ -38,7 +38,3 @@ Route::resource('projects/{project}/tasks/{task}/comments', App\Http\Controllers
 Route::resource('projects/{project}/tasks/{task}/images', App\Http\Controllers\ImageController::class)
     ->only(['store', 'destroy'])
     ->middleware(['auth']);
-
-Route::resource('projects/{project}/tasks/create/files', App\Http\Controllers\FileController::class)
-    ->only(['store', 'destroy'])
-    ->middleware(['auth']);
