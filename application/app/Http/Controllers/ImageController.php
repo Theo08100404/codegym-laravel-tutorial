@@ -23,8 +23,12 @@ class ImageController extends Controller
 
 
         if ($count <= 4) {
-            $fileName = $request->file_img->getClientOriginalName();
-            $path = $request->file_img->storeAs('', $fileName, 'public');
+            $getFileName = $request->file_img->getClientOriginalName();
+            $filename = pathinfo($getFileName, PATHINFO_FILENAME);
+            $getFileExtension = $request->file_img->getClientOriginalExtension();
+            $user_id = $request->user()->id;
+            $filenameToStore = $filename . "_" . time() . "_" . $user_id . "." . $getFileExtension;
+            $path = $request->file_img->storeAs('', $filenameToStore, 'public');
             Image::create([
                 'image' => $path,
                 'project_id' => $project->id,

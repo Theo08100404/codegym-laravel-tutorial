@@ -23,3 +23,6 @@ sleep 120
 # セットアップ
 ./vendor/bin/sail npm install
 ./vendor/bin/sail npm run dev
+
+# シンボリックリンクを貼る
+./vendor/bin/sail artisan storage:link
