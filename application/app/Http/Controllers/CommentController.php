@@ -16,15 +16,19 @@ class CommentController extends Controller
             'comment' => 'min:1|max:1000'
         ]);
 
-        if (Comment::create([
-            'comment' => $request->comment,
-            'project_id' => $project->id,
-            'task_id' =>$task->id,
-            'user_id' => $request->user()->id,
-        ])) {
+        \DB::beginTransaction();
+        try {
+            Comment::create([
+                'comment' => $request->comment,
+                'project_id' => $project->id,
+                'task_id' => $task->id,
+                'user_id' => $request->user()->id,
+            ]);
+            \DB::commit();
             $flash = ['success' => __('Comment created successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to create the comment.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()
@@ -32,18 +36,23 @@ class CommentController extends Controller
             ->with($flash);
     }
 
-    public function destroy (Project $project, Task $task, Comment $comment ,Request $request)  
-    {   
-    
-        if ($comment->user_id === $request->user()->id)  {
-            $comment->delete();
-            $flash = ['success' => __('Comment deleted successfully.')];
+    public function destroy(Project $project, Task $task, Comment $comment, Request $request)
+    {
+        if ($comment->user_id === $request->user()->id) {
+            \DB::beginTransaction();
+            try {
+                $comment->delete();
+                \DB::commit();
+                $flash = ['success' => __('Comment deleted successfully.')];
+            } catch (\Throwable $e) {
+                \DB::rollback();
+                abort(500, 'サーバーでエラーが発生しました。');
+            }
         } else {
-            $flash = ['error' => __('Failed to delete the comment.')];
+            abort(403, '削除する権限がありません');
         }
-
         return redirect()
-            ->route('tasks.edit', ['project' => $project->id , 'task' => $task])
+            ->route('tasks.edit', ['project' => $project->id, 'task' => $task])
             ->with($flash);
     }
 }

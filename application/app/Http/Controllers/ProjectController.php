@@ -58,14 +58,18 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        if (Project::create([
-            'key' => $request->key,
-            'name' => $request->name,
-            'created_user_id' => $request->user()->id,
-        ])) {
+        \DB::beginTransaction();
+        try {
+            Project::create([
+                'key' => $request->key,
+                'name' => $request->name,
+                'created_user_id' => $request->user()->id,
+            ]);
+            \DB::commit();
             $flash = ['success' => __('Project created successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to create the project.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()->route('projects.index')
@@ -108,10 +112,14 @@ class ProjectController extends Controller
             'name' => 'required|string|max:255',
         ]);
 
-        if ($project->update($request->all())) {
+        \DB::beginTransaction();
+        try {
+            $project->update($request->all());
+            \DB::commit();
             $flash = ['success' => __('Project updated successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to update the project.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()
@@ -127,10 +135,14 @@ class ProjectController extends Controller
      */
     public function destroy(Project $project)
     {
-        if ($project->delete()) {
+        \DB::beginTransaction();
+        try {
+            $project->delete();
+            \DB::commit();
             $flash = ['success' => __('Project deleted successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to delete the project.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()

@@ -116,20 +116,24 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
-        if (Task::create([
-            'project_id' => $project->id,
-            'task_kind_id' => $request->task_kind_id,
-            'name' => $request->name,
-            'detail' => $request->detail,
-            'task_status_id' => $request->task_status_id,
-            'assigner_id' => $request->assigner_id,
-            'task_category_id' => $request->task_category_id,
-            'due_date' => $request->due_date,
-            'created_user_id' => $request->user()->id,
-        ])) {
+        \DB::beginTransaction();
+        try {
+            Task::create([
+                'project_id' => $project->id,
+                'task_kind_id' => $request->task_kind_id,
+                'name' => $request->name,
+                'detail' => $request->detail,
+                'task_status_id' => $request->task_status_id,
+                'assigner_id' => $request->assigner_id,
+                'task_category_id' => $request->task_category_id,
+                'due_date' => $request->due_date,
+                'created_user_id' => $request->user()->id,
+            ]);
+            \DB::commit();
             $flash = ['success' => __('Task created successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to create the task.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()->route('tasks.index', ['project' => $project->id])
@@ -192,10 +196,14 @@ class TaskController extends Controller
             'due_date' => 'nullable|date',
         ]);
 
-        if ($task->update($request->all())) {
+        \DB::beginTransaction();
+        try {
+            $task->update($request->all());
+            \DB::commit();
             $flash = ['success' => __('Task updated successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to update the task.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()
@@ -218,10 +226,14 @@ class TaskController extends Controller
             Storage::delete('public/' . $deleteFilePath);
         };
 
-        if ($task->delete()) {
+        \DB::beginTransaction();
+        try {
+            $task->delete();
+            \DB::commit();
             $flash = ['success' => __('Task deleted successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to delete the task.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()
