@@ -29,11 +29,18 @@ class ImageController extends Controller
             $user_id = $request->user()->id;
             $filenameToStore = $filename . "_" . time() . "_" . $user_id . "." . $getFileExtension;
             $path = $request->file_img->storeAs('', $filenameToStore, 'public');
-            Image::create([
-                'image' => $path,
-                'project_id' => $project->id,
-                'task_id' => $task->id,
-            ]);
+            \DB::beginTransaction();
+            try {
+                Image::create([
+                    'image' => $path,
+                    'project_id' => $project->id,
+                    'task_id' => $task->id,
+                ]);
+                \DB::commit();
+            } catch (\Throwable $e) {
+                \DB::rollback();
+                abort(500, 'サーバーでエラーが発生しました。');
+            }
         } else {
             $flash = ['error' => __('You can upload up to 5 files.')];
         }
@@ -52,10 +59,14 @@ class ImageController extends Controller
     {
         $deleteFilePath = $image->image;
         Storage::delete('public/' . $deleteFilePath);
-        if ($image->delete()) {
+        \DB::beginTransaction();
+        try {
+            $image->delete();
+            \DB::commit();
             $flash = ['success' => __('Image deleted successfully.')];
-        } else {
-            $flash = ['error' => __('Failed to delete the Image.')];
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500, 'サーバーでエラーが発生しました。');
         }
 
         return redirect()
