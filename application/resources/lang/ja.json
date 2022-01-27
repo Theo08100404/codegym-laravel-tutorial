@@ -203,5 +203,11 @@
     "Comment deleted successfully.":"コメントを削除しました。",
     "Failed to delete the comment.":"コメントの削除に失敗しました。",
     "Are you sure you want to delete this comment?":"コメントを削除しますか？",
-    "Are you sure you want to delete this comment? Once a comment is deleted, all of its resources and data will be permanently deleted.":"本当にコメントを削除してよろしいでしょうか？一度コメントを削除すると、すべてのリソースとデータは永久に削除されます。"
+    "Are you sure you want to delete this comment? Once a comment is deleted, all of its resources and data will be permanently deleted.":"本当にコメントを削除してよろしいでしょうか？一度コメントを削除すると、すべてのリソースとデータは永久に削除されます。",
+    "Store Image":"画像を保存する",
+    "Image deleted successfully.":"画像を削除しました。",
+    "Failed to delete the Image.":"画像の削除に失敗しました。",
+    "You can upload up to 5 files.":"画像の投稿は5つまでしかできません。",
+    "file_img" :"画像",
+    "Image":"画像の添付"
 }

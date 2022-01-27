@@ -9,7 +9,10 @@ use App\Models\TaskKind;
 use App\Models\TaskStatus;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\Image;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use LengthException;
 
 class TaskController extends Controller
 {
@@ -81,6 +84,7 @@ class TaskController extends Controller
         $task_kinds = TaskKind::all();
         $task_statuses = TaskStatus::all();
         $task_categories = TaskCategory::all();
+        $images = Image::all();
         $assigners = User::all();
 
         return view('tasks.create', [
@@ -89,6 +93,7 @@ class TaskController extends Controller
             'task_statuses' => $task_statuses,
             'task_categories' => $task_categories,
             'assigners' => $assigners,
+            'images' => $images
         ]);
     }
 
@@ -154,9 +159,10 @@ class TaskController extends Controller
         $task_statuses = TaskStatus::all();
         $task_categories = TaskCategory::all();
         $assigners = User::all();
-        $id =$task->id;
-        $comments = Comment::where('task_id',$id)->get();
-        return view('tasks.edit', compact('comments') , [
+        $id = $task->id;
+        $comments = Comment::where('task_id', $id)->get();
+        $images = Image::where('task_id', $id)->get();
+        return view('tasks.edit', compact('comments', 'images'), [
             'project' => $project,
             'task_kinds' => $task_kinds,
             'task_statuses' => $task_statuses,
@@ -205,6 +211,13 @@ class TaskController extends Controller
      */
     public function destroy(Project $project, Task $task)
     {
+        $task_id = $task->id;
+        $images = Image::where('task_id', '=', $task_id)->get();
+        for ($i = 0; $i < count($images); $i++) {
+            $deleteFilePath = $images[$i]->image;
+            Storage::delete('public/' . $deleteFilePath);
+        };
+
         if ($task->delete()) {
             $flash = ['success' => __('Task deleted successfully.')];
         } else {

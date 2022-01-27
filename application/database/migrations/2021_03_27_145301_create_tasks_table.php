@@ -45,6 +45,7 @@ class CreateTasksTable extends Migration
             $table->softDeletes();
         });
 
+
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('project_id')->constrained('projects');

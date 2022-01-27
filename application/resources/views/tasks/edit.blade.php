@@ -77,6 +77,29 @@
     const modalOpen = (url) => {
         document.comDeleteForm.action = url;
     }
+
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('file-input');
+    dropZone.addEventListener('dragover', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.style.background = '#e1e7f0';
+    }, false);
+
+    dropZone.addEventListener('dragleave', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.style.background = '#ffffff';
+    }, false);
+
+
+    dropZone.addEventListener('drop', function(event) {
+        event.stopPropagation();
+        event.preventDefault();
+        this.style.background = '#ffffff';
+        var files = event.dataTransfer.files;
+        fileInput.files = files;
+    }, false);
 </script>
 @endsection
 <x-app-layout>
@@ -213,8 +236,34 @@
             </div>
         </form>
 
+        <form method="POST" action="{{ route('images.store', ['project' => $project->id, 'task' => $task->id]) }}" enctype="multipart/form-data">
+            @csrf
+            <div class="flex flex-col px-8 pt-2 mx-6 rounded-md bg-white">
+                <x-label for="Image" :value="__('Image')" />
+                <div id="drop-zone" style="border: 1px solid; padding: 30px ;" class="md:w-full px-3 mb-6">
+                    <p>ファイルをドラッグ＆ドロップもしくは</p>
+                    <input type="file" name="file_img" id="file-input">
+                    <x-button type='submit' class="btn btn-primary">{{__('Store Image')}}</x-button>
+                </div>
+            </div>
+        </form>
+        @foreach($images as $image)
+        <div class="max-w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div><img src="{{ asset('/storage/' . $image->image ) }}" width="130" height="100"></div>
+        </div>
+        <form method="POST" action="{{ route('images.destroy', ['project' => $project->id , 'task' => $task->id , 'image' => $image ]) }}" enctype="multipart/form-data">
+            @csrf
+            @method("Delete")
+            <x-button class="m-2 px-10 bg-red-600 text-white hover:bg-red-700 active:bg-red-900 focus:border-red-900 ring-red-300">
+                {{ __('Delete') }}
+            </x-button>
+        </form>
+        @endforeach
+
+
         <form method="POST" action="{{ route('comments.store', ['project' => $project->id, 'task' => $task->id]) }}">
             @csrf
+
             <div class="flex flex-col px-4 pt-6 mx-4 rounded-md bg-white">
                 <div class="md:w-full px-3 mb-16">
                     <x-label for="comment" :value="__('Comment')" class="{{ $errors->has('comment') ? 'text-red-600' :'' }}" />

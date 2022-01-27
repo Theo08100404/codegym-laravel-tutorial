@@ -133,6 +133,19 @@ class Task extends Model
     public function comment()
     {
         return $this->hasMany('App\Models\Comment');
-     
+    }
+
+    public function images()
+    {
+        return $this->hasMany('App\Models\Image');
+    }
+
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function ($task) {
+            $task->images()->delete();
+        });
     }
 }
